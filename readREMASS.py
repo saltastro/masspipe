@@ -10,9 +10,9 @@ can be requested which are:
 
 A--Produce the seeing measurements from the file
 
-TX--Produce the fixed layer CN2 measurements
+T*--Produce the fixed layer CN2 measurements
 
-TL--Produce the floating layer CN2 measurements.
+W*--Produce wind profile measurements
 
 Each of the requests will return all of the data in that file
 associated with that line as a list. The individual arrays that are
@@ -36,7 +36,7 @@ rtype='list' or 'dict'
 
 """
 
-import numpy
+import numpy as np
 import datetime
 
 
@@ -45,13 +45,17 @@ def lineRead(olist, line, ltype):
     if ltype == '#':
         if line.startswith('#'):
             olist = appendlist(olist, line.strip())
-    elif ltype == 'A':
+    elif ltype == 'A' or ltype == 'M' or ltype == 'F':
         if line.startswith(ltype):
             olist = appendlist(olist, line)
     elif ltype.startswith('T'):
         if line.startswith(ltype[0]): 
             if line.split()[3] == ltype[1]:
                 olist = appendlist(olist, line)
+    elif ltype.startswith('W'):
+        if line.startswith(ltype[0]): 
+            if line.split()[3] == ltype[1]:
+                olist = appendlist(olist, line)                
     return olist
 
 
@@ -107,18 +111,23 @@ def arrlist(olist, column=0):
     """For all columns appearring after column, convert to an array"""
     for i in range(column, len(olist)):
         try:
-            olist[i] = numpy.array(olist[i])
+            olist[i] = np.array(olist[i])
         except:
             pass
     return olist
 
 Mobjectlist = ['type', 'data', 'time', 'format', 'Airmass']
+Fobjectlist = ['type', 'data', 'time',
+               'A', 'e_A', 'B', 'e_B',
+               'C', 'e_C', 'D', 'e_D']
 Aobjectlist = ['type', 'date', 'time', 'fSee', 'e_fSee', 'DIMMSee',
                'e_DIMMSee', 'M0', 'e_M0', 'DIMMCn2', 'e_DIMMCn2', 'Heff',
                'e_Heff', 'Isopl', 'e_Isopl', 'M2', 'e_M2', 'Desi_Tau',
                'e_Desi_Tau', 'Tau', 'e_Tau']
 Tobjectlist = ['type', 'date', 'time', 'Met', 'Nz', 'Chi2', 'SeeCn',
                'z', 'Cn2', 'e_Cn2']
+Wobjectlist = ['type', 'date', 'time', 'Exp', 'Nz', 'Resid', 'Tau',
+               'z', 'wind', 'e_wind']
 
 
 def makedict(olist, ltype):
@@ -126,12 +135,14 @@ def makedict(olist, ltype):
     odict = {}
     if ltype == 'A':
         objlist = Aobjectlist
-    elif ltype == 'TX':
+    elif ltype == 'TX' or ltype == 'TV':
         objlist = Tobjectlist
-    elif ltype == 'TV':
-        objlist = Tobjectlist        
+    elif ltype == 'WV' or ltype == 'WS' or ltype == 'WL':
+        objlist = Wobjectlist        
     elif ltype == 'M':
         objlist = Mobjectlist
+    elif ltype == 'F':
+        objlist = Fobjectlist
     else:
         return olist
 
@@ -148,6 +159,20 @@ def makedict(olist, ltype):
             odict['Cn2'].append(olist[offset])
             offset += 1
             odict['e_Cn2'].append(olist[offset])
+            offset += 1
+    elif ltype == 'WS' or ltype == 'WL' or ltype == 'WV':
+        offset = 7
+        for i in range(offset):
+            odict[objlist[i]] = olist[i]
+        odict['z'] = []
+        odict['wind'] = []
+        odict['e_wind'] = []
+        for i in range(int(olist[4][0])):
+            odict['z'].append(olist[offset])
+            offset += 1
+            odict['wind'].append(olist[offset])
+            offset += 1
+            odict['e_wind'].append(olist[offset])
             offset += 1
     else:
         for i in range(len(objlist)):
@@ -186,7 +211,7 @@ def readMASS(massfile, ltype, rtype='list', verbose=False, indatetime=False):
         return olist
 
     #set the function that will read in the values
-    if ltype not in ['#', 'A', 'TV', 'TX', 'M']:
+    if ltype not in ['#', 'A', 'TV', 'TX', 'WS', 'WL', 'WV', 'F', 'M']:
         print 'ltype %s is not an accepted format' % ltype
         return olist
 
