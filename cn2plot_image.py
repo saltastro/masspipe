@@ -44,11 +44,11 @@ def cn2plot_image(massdata,
     last = int(minutes[-1]) + 1
     nmin = last - first
 
-    turb_im = np.zeros((nmin, nlayers))
+    turb_im = np.zeros((int(nmin / 2) + 1, nlayers))
     cnsq_t = transpose(cnsq)
 
-    for i in range(len(minutes)):
-        index = int(minutes[i] - first)
+    for i in range(0,len(minutes)):
+        index = int(0.5 * (minutes[i] - first))
         turb_im[index] = cnsq_t[i]
 
     turb = transpose(turb_im)
@@ -69,7 +69,7 @@ def cn2plot_image(massdata,
                         cmap=cm.get_cmap("hot_r"),
                         aspect='auto',
                         origin='lower',
-                        interpolation='bicubic',
+                        interpolation='gaussian',
                         extent=(ut[0], ut[-1], 0, nlayers))
     cax = axes([0.85, 0.1, 0.025, 0.3825])
     cb = f.colorbar(implot, cax=cax)

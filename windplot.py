@@ -35,11 +35,11 @@ def windplot(winddata,
     last = int(minutes[-1]) + 1
     nmin = last - first
 
-    wind_im = np.zeros((nmin, nlayers))
+    wind_im = np.zeros((int(nmin / 2) + 1, nlayers))
     wind_t = transpose(wind)
 
     for i in range(len(minutes)):
-        index = int(minutes[i] - first)
+        index = int(0.5 * (minutes[i] - first))
         wind_im[index] = wind_t[i]
 
     wind = transpose(wind_im)
