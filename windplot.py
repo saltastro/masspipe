@@ -55,7 +55,7 @@ def windplot(winddata,
 
     wind[wind < 0.01] = 0.01
     implot = ax2.imshow(wind,
-                        norm=LogNorm(vmin=0.01, vmax=50.0),
+                        norm=Normalize(vmin=1, vmax=50.0),
                         cmap=cm.get_cmap("hot_r"),
                         aspect='auto',
                         origin='lower',
@@ -64,9 +64,8 @@ def windplot(winddata,
     cax = axes([0.85, 0.1, 0.025, 0.3825])
     cb = f.colorbar(implot, cax=cax)
     cb.ax.set_ylabel('Wind Speed (m/s)', fontsize=12, rotation=270)
-#    cb.set_ticks([0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 2.0])
-#    cb.ax.set_yticklabels(["0.01\"", "0.05\"", "0.1\"", "0.25\"", \
-#                           "0.5\"", "1.0\"", "2.0\""])
+    cb.set_ticks([10, 20, 30, 40, 50])
+    cb.ax.set_yticklabels(["10", "20", "30", "40", "50"])
     xt = ax1.get_xticks()
     xl = []
     for i in range(len(xt)):
