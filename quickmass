@@ -2,7 +2,9 @@
 
 MASSPIPE=/Users/tim/SALT/MASSDIMM/masspipe
 
-cat $1 | $MASSPIPE/atmos.2.97.3 -a60 -Z0.3,0.5,0.75,1,1.5,2,3,4,6,8,12,16,24 \
-    -r$MASSPIPE/data/mass_dimm.crv \
-    -c$MASSPIPE/data/mass_dimm.crv -w \
-    -s$MASSPIPE/data/spectra/ | $MASSPIPE/filter.awk
+if [ $1 ]; then
+    cat $1 | $MASSPIPE/atmos.2.97.3 -a60 -Z0.3,0.5,0.75,1,1.5,2,3,4,6,8,12,16,24 \
+	-r$MASSPIPE/data/mass_dimm.crv \
+	-c$MASSPIPE/data/mass_dimm.crv -w \
+	-s$MASSPIPE/data/spectra/ | $MASSPIPE/filter.awk
+fi
