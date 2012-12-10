@@ -12,9 +12,6 @@ from readREMASS import readMASS, convert_time
 from readDIMM import readDIMM
 from matplotlib.colors import LogNorm
 from pylab import *
-import matplotlib.ticker as ticker
-import matplotlib.dates as dates
-import datetime
 
 
 def cn2plot_image(massdata,
@@ -47,7 +44,7 @@ def cn2plot_image(massdata,
     turb_im = np.zeros((int(nmin / 2) + 1, nlayers))
     cnsq_t = transpose(cnsq)
 
-    for i in range(0,len(minutes)):
+    for i in range(0, len(minutes)):
         index = int(0.5 * (minutes[i] - first))
         turb_im[index] = cnsq_t[i]
 
@@ -75,7 +72,7 @@ def cn2plot_image(massdata,
     cb = f.colorbar(implot, cax=cax)
     cb.ax.set_ylabel('Seeing FWHM', fontsize=12, rotation=270)
     cb.set_ticks([0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 2.0])
-    cb.ax.set_yticklabels(["0.01\"", "0.05\"", "0.1\"", "0.25\"", \
+    cb.ax.set_yticklabels(["0.01\"", "0.05\"", "0.1\"", "0.25\"",
                            "0.5\"", "1.0\"", "2.0\""])
     xt = ax1.get_xticks()
     xl = []

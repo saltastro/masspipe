@@ -9,12 +9,7 @@ matplotlib.use('TkAgg')
 #rc('font',**{'family':'sans-serif','sans-serif':['Avant Garde']})
 #rc('text', usetex=True)
 from readREMASS import readMASS, convert_time
-from readDIMM import readDIMM
-from matplotlib.colors import LogNorm
 from pylab import *
-import matplotlib.ticker as ticker
-import matplotlib.dates as dates
-import datetime
 
 
 def windplot(winddata,

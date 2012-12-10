@@ -49,13 +49,13 @@ def lineRead(olist, line, ltype):
         if line.startswith(ltype):
             olist = appendlist(olist, line)
     elif ltype.startswith('T'):
-        if line.startswith(ltype[0]): 
+        if line.startswith(ltype[0]):
             if line.split()[3] == ltype[1]:
                 olist = appendlist(olist, line)
     elif ltype.startswith('W'):
-        if line.startswith(ltype[0]): 
+        if line.startswith(ltype[0]):
             if line.split()[3] == ltype[1]:
-                olist = appendlist(olist, line)                
+                olist = appendlist(olist, line)
     return olist
 
 
@@ -138,7 +138,7 @@ def makedict(olist, ltype):
     elif ltype == 'TX' or ltype == 'TV':
         objlist = Tobjectlist
     elif ltype == 'WV' or ltype == 'WS' or ltype == 'WL':
-        objlist = Wobjectlist        
+        objlist = Wobjectlist
     elif ltype == 'M':
         objlist = Mobjectlist
     elif ltype == 'F':
