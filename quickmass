@@ -1,6 +1,8 @@
 #!/bin/sh
 
-MASSPIPE=/Users/tim/SALT/MASSDIMM/masspipe
+if [ -z "$MASSPIPE" ]; then
+    MASSPIPE="/Users/timdimm/MASSDIMM/masspipe"
+fi
 
 if [ $1 ]; then
     cat $1 | $MASSPIPE/atmos.2.97.3 -a60 -Z0.3,0.5,0.75,1,1.5,2,3,4,6,8,12,16,24 \
